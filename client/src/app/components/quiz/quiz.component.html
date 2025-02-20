@@ -1,0 +1,44 @@
+<div class="trivia-container" *ngIf="questions?.length">
+  <div class="trivia-card">
+    <ng-container *ngIf="!showResults">
+      <header class="trivia-header">
+        <h1>Select the correct answer:</h1>
+      </header>
+
+      <div class="questions-list">
+        <div *ngIf="currentQuestion">
+          <h1>Question {{ currentQuestionIndex + 1 }} of {{ questions.length }}</h1>
+          <h2>{{ currentQuestion.question }}</h2>
+
+          <div class="options">
+            <button
+              *ngFor="let option of currentQuestion.allAnswers"
+              (click)="selectAnswer(currentQuestion, option)"
+              [ngClass]="{
+                'correct': option === currentQuestion.correctAnswer && currentQuestion.selectedAnswer,
+                'incorrect': option === currentQuestion.selectedAnswer && option !== currentQuestion.correctAnswer
+              }"
+              >
+              {{ option }}
+            </button>
+          </div>
+
+          <div class="actions">
+            <h4>Accumulated Points: {{totalScore}}</h4>
+            <button class="next-button" (click)="nextQuestion()" [disabled]="!nextEnabled">Next</button>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="showResults">
+      <header class="trivia-header">
+        <h1>Results:</h1>
+        <h2>Total Points: {{totalScore}}</h2>
+      </header>
+      <div class="actions">
+        <button class="exit-button" (click)="exit()">Exit</button>
+        <button class="next-button" (click)="restartQuiz()">Restart</button>
+      </div>
+    </ng-container>
+  </div>
+</div>
